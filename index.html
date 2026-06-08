@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Digital Seva Kendra — Sunny Gupta</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;color:#1a1a1a;background:#fff}
+a{text-decoration:none}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1.5rem;border-bottom:1px solid #e5e7eb;background:#fff;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;background:#E6F1FB;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-icon i{font-size:22px;color:#185FA5}
+.logo-text{font-size:16px;font-weight:700;color:#0C447C}
+.logo-sub{font-size:11px;color:#185FA5}
+.nav-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lang-toggle{display:flex;border:1px solid #d1d5db;border-radius:20px;overflow:hidden}
+.lang-btn{background:none;border:none;padding:6px 14px;font-size:12px;cursor:pointer;font-family:inherit;color:#6b7280}
+.lang-btn.active{background:#185FA5;color:#fff}
+.nav-wa{background:#1D9E75;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;font-weight:500}
+.hero{background:linear-gradient(135deg,#E6F1FB 0%,#dbeafe 100%);padding:2.5rem 1.5rem;text-align:center;border-bottom:1px solid #d1d5db}
+.hero h1{font-size:26px;font-weight:800;color:#0C447C;margin-bottom:.5rem}
+.hero p{font-size:15px;color:#185FA5;margin-bottom:1.2rem;max-width:500px;margin-left:auto;margin-right:auto}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:1.2rem}
+.chip{background:#B5D4F4;color:#042C53;font-size:12px;padding:4px 14px;border-radius:20px;font-weight:600}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-green{background:#1D9E75;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:6px}
+.btn-green:hover{background:#0F6E56}
+.btn-blue{background:#185FA5;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:600}
+.btn-blue:hover{background:#0C447C}
+.section{padding:2rem 1.5rem}
+.section.alt{background:#f9fafb}
+.sec-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:.3rem}
+.sec-sub{font-size:13px;color:#6b7280;text-align:center;margin-bottom:1.2rem}
+.cat-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:1.5rem}
+.cat-tab{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:20px;padding:7px 16px;font-size:12px;cursor:pointer;color:#6b7280;font-family:inherit;font-weight:500}
+.cat-tab:hover{border-color:#185FA5;color:#185FA5}
+.cat-tab.active{background:#185FA5;color:#fff;border-color:#185FA5}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.svc-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem;transition:all .15s}
+.svc-card:hover{border-color:#185FA5;box-shadow:0 2px 8px rgba(24,95,165,.12)}
+.svc-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.svc-card h3{font-size:13px;font-weight:600;margin-bottom:3px}
+.tag-fee{font-size:11px;color:#185FA5;font-weight:700;margin-top:5px;display:block}
+.apply-btn{width:100%;background:#185FA5;color:#fff;border:none;padding:8px;border-radius:8px;font-size:12px;cursor:pointer;margin-top:10px;font-family:inherit;font-weight:600}
+.apply-btn:hover{background:#0C447C}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.contact-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem;display:flex;gap:12px;align-items:flex-start}
+.contact-card i{font-size:22px;color:#185FA5;flex-shrink:0;margin-top:2px}
+.contact-card h4{font-size:13px;font-weight:700;margin-bottom:4px}
+.contact-card p{font-size:12px;color:#6b7280;line-height:1.6}
+.wa-float{background:#1D9E75;color:#fff;border:none;padding:13px 24px;border-radius:30px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:700;display:flex;align-items:center;gap:8px;margin:1.5rem auto;width:fit-content}
+footer{background:#0C447C;color:#B5D4F4;text-align:center;padding:1.2rem;font-size:13px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;padding:1rem;overflow-y:auto}
+.overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.modal{background:#fff;border-radius:16px;padding:1.5rem;width:100%;max-width:520px;margin-top:1rem;margin-bottom:1rem}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid #e5e7eb}
+.modal-header h3{font-size:16px;font-weight:700;color:#0C447C}
+.close-btn{background:none;border:none;cursor:pointer;font-size:22px;color:#6b7280}
+.docs-box{background:#eff6ff;border-radius:8px;padding:.75rem;margin-bottom:14px;border:1px solid #bfdbfe}
+.docs-box p{font-size:12px;color:#1d4ed8;margin-bottom:6px;font-weight:700}
+.docs-box ul{list-style:none}
+.docs-box ul li{font-size:12px;color:#1e40af;padding:2px 0}
+.docs-box ul li i{font-size:12px;margin-right:4px;color:#2563eb}
+.form-group{margin-bottom:12px}
+.form-group label{font-size:12px;color:#374151;display:block;margin-bottom:5px;font-weight:600}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.form-group textarea{height:75px;resize:vertical}
+.payment-box{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:1rem;margin-bottom:14px}
+.payment-box-title{font-size:13px;font-weight:700;color:#92400e;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.qr-wrap{text-align:center;margin-bottom:10px}
+.qr-wrap img{width:130px;height:130px;border-radius:10px;border:2px solid #185FA5;padding:4px;background:#fff}
+.upi-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #fde68a;border-radius:8px;padding:.6rem .75rem;margin-bottom:8px}
+.upi-row span{font-size:13px;font-weight:600;color:#185FA5;flex:1;word-break:break-all}
+.copy-upi-btn{background:#185FA5;color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.amount-badge{display:inline-block;background:#185FA5;color:#fff;font-size:14px;font-weight:700;padding:5px 18px;border-radius:20px;margin-bottom:10px}
+.screenshot-upload{border:2px dashed #d1d5db;border-radius:8px;padding:1rem;text-align:center;cursor:pointer;position:relative;background:#fff}
+.screenshot-upload:hover{border-color:#185FA5}
+.screenshot-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.screenshot-upload i{font-size:28px;color:#9ca3af;display:block;margin-bottom:4px}
+.screenshot-upload p{font-size:12px;color:#6b7280}
+.screenshot-preview{width:100%;max-height:150px;object-fit:contain;border-radius:6px;margin-top:8px;display:none;border:1px solid #e5e7eb}
+.submit-btn{width:100%;background:#185FA5;color:#fff;border:none;padding:12px;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px}
+.submit-btn:hover{background:#0C447C}
+.submit-btn:disabled{background:#9ca3af;cursor:not-allowed}
+.success-card{display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:1.5rem;text-align:center;margin-top:14px}
+.success-card i{font-size:40px;color:#16a34a;display:block;margin-bottom:8px}
+.success-card h4{font-size:16px;font-weight:700;color:#15803d;margin-bottom:6px}
+.success-card p{font-size:13px;color:#166534}
+.success-card .ref-id{font-size:12px;color:#16a34a;margin-top:8px;font-family:monospace;background:#dcfce7;padding:6px 12px;border-radius:6px;display:inline-block}
+.spinner{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:480px){
+  .nav{padding:.6rem 1rem}
+  .hero{padding:1.8rem 1rem}
+  .hero h1{font-size:21px}
+  .section{padding:1.5rem 1rem}
+  .services-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-building-community"></i></div>
+    <div>
+      <div class="logo-text">Digital Seva Kendra</div>
+      <div class="logo-sub">Sunny Gupta — Operator</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-hi" onclick="setLang('hi')">हिंदी</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+    <button class="nav-wa" onclick="openWA('Namaste! Digital Seva Kendra se help chahiye.')">
+      <i class="ti ti-brand-whatsapp"></i> WhatsApp
+    </button>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1 id="hero-h1">आपकी सेवा, हमारे हाथ</h1>
+  <p id="hero-p">सरकारी दस्तावेज़, प्रमाण पत्र, ITR, पासपोर्ट और बहुत कुछ — सब एक जगह पे</p>
+  <div class="hero-chips">
+    <span class="chip">Same Day Processing</span>
+    <span class="chip" id="chip2">21+ सेवाएं</span>
+    <span class="chip">Secure Database</span>
+    <span class="chip">UPI Payment</span>
+  </div>
+  <div class="hero-btns">
+    <button class="btn-green" onclick="openWA('Namaste! Mujhe apna kaam karwana hai.')">
+      <i class="ti ti-brand-whatsapp"></i> <span id="hero-wa-btn">WhatsApp पे Poochho</span>
+    </button>
+    <button class="btn-blue" onclick="document.getElementById('svc-sec').scrollIntoView({behavior:'smooth'})" id="hero-svc-btn">सभी सेवाएं देखो</button>
+  </div>
+</div>
+
+<div class="section" id="svc-sec">
+  <p class="sec-title" id="sec-title">हमारी सेवाएं</p>
+  <p class="sec-sub" id="sec-sub">Category चुनें और अपनी सेवा पर click करके apply करें</p>
+  <div class="cat-tabs" id="cat-tabs"></div>
+  <div class="services-grid" id="svc-grid"></div>
+</div>
+
+<div class="section alt">
+  <p class="sec-title" id="contact-title">Helpline & Contact</p>
+  <p class="sec-sub" id="contact-sub">किसी भी help के लिए हमसे संपर्क करें</p>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <i class="ti ti-user-circle"></i>
+      <div><h4>Operator</h4><p>Sunny Gupta<br>Digital Seva Kendra</p></div>
+    </div>
+    <div class="contact-card">
+      <i class="ti ti-phone"></i>
+      <div><h4>Helpline</h4><p><a href="tel:9546661632" style="color:#185FA5;font-weight:600">9546661632</a><br><span id="c2p">Mon–Sat, 9AM–7PM</span></p></div>
+    </div>
+    <div class="contact-card">
+      <i class="ti ti-brand-whatsapp"></i>
+      <div><h4>WhatsApp</h4><p id="c3p">Documents भेजो, status पूछो<br><a href="https://wa.me/919546661632" style="color:#1D9E75;font-weight:600">Chat करो →</a></p></div>
+    </div>
+    <div class="contact-card">
+      <i class="ti ti-clock"></i>
+      <div><h4 id="c4h">काम के घंटे</h4><p>Monday – Saturday<br>9:00 AM – 7:00 PM</p></div>
+    </div>
+  </div>
+  <button class="wa-float" onclick="openWA('Namaste Sunny bhai! Mujhe seva ki zaroorat hai.')">
+    <i class="ti ti-brand-whatsapp"></i> <span id="wa-float-txt">WhatsApp पे Message करो</span>
+  </button>
+</div>
+
+<footer>© 2026 Digital Seva Kendra — Sunny Gupta &nbsp;|&nbsp; Helpline: 9546661632</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Apply Karo</h3>
+      <button class="close-btn" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="docs-box" id="docs-box"></div>
+    <div id="form-area">
+      <div class="form-group"><label id="lbl-name">आपका पूरा नाम *</label><input type="text" id="f-name" placeholder="नाम लिखें"/></div>
+      <div class="form-group"><label id="lbl-phone">Mobile Number *</label><input type="tel" id="f-phone" placeholder="10 digit number" maxlength="10"/></div>
+      <div class="form-group"><label id="lbl-addr">Village / Mohalla / Ward</label><input type="text" id="f-address" placeholder="अपना पता लिखें"/></div>
+      <div class="form-group"><label id="lbl-note">कोई और जानकारी (optional)</label><textarea id="f-note" placeholder="कोई भी खास बात..."></textarea></div>
+      <div class="form-group"><label id="lbl-docs">Documents Upload करो (photo/PDF)</label><input type="file" id="f-files" multiple accept="image/*,.pdf"/></div>
+
+      <!-- PAYMENT -->
+      <div class="payment-box" id="payment-box">
+        <div class="payment-box-title"><i class="ti ti-credit-card"></i> <span id="pay-title">Payment करो</span></div>
+        <div style="text-align:center;margin-bottom:10px">
+          <span class="amount-badge" id="pay-amount">₹50</span>
+        </div>
+        <div class="qr-wrap">
+          <img src="data:image/png;base64,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" alt="UPI QR Code — scan to pay Sunny Gupta"/>
+          <p style="font-size:11px;color:#6b7280;margin-top:4px" id="qr-hint">📱 Kisi bhi UPI app se scan karo</p>
+        </div>
+        <div class="upi-row">
+          <span>sunny887733gupta-3@okaxis</span>
+          <button class="copy-upi-btn" onclick="copyUPI()" id="copy-upi-btn">Copy</button>
+        </div>
+        <div style="margin-top:12px">
+          <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:6px" id="lbl-ss">Payment Screenshot Attach करो *</label>
+          <div class="screenshot-upload">
+            <input type="file" id="f-screenshot" accept="image/*" onchange="previewSS(this)"/>
+            <i class="ti ti-camera-plus"></i>
+            <p id="ss-hint">Screenshot ya Photo click karo</p>
+          </div>
+          <img id="ss-preview" class="screenshot-preview" alt="Payment screenshot preview"/>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="submitApp()" id="submit-btn">
+        <span class="spinner" id="spinner"></span>
+        <i class="ti ti-send" id="submit-icon"></i>
+        <span id="submit-txt">Application Submit Karo</span>
+      </button>
+    </div>
+
+    <div class="success-card" id="success-card">
+      <i class="ti ti-circle-check"></i>
+      <h4 id="success-h">Application Submit Ho Gayi!</h4>
+      <p id="success-p">Sunny bhai aapko jald contact karenge.</p>
+      <div class="ref-id" id="ref-id"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var SUPABASE_URL='https://fptrdjqszoysvyxgjifj.supabase.co';
+var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwdHJkanFzem95c3Z5eGdqaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDYyODksImV4cCI6MjA5NjMyMjI4OX0.SnCSlR6M1rSkHoKzTaxpkHECw2RXmY71iT_1Vcdpygc';
+var lang='hi',activeCat='',currentSvc=null,ssBase64=null;
+
+var TR={
+  hi:{heroH1:'आपकी सेवा, हमारे हाथ',heroP:'सरकारी दस्तावेज़, प्रमाण पत्र, ITR, पासपोर्ट और बहुत कुछ — सब एक जगह पे',chip2:'21+ सेवाएं',heroWaBtn:'WhatsApp पे Poochho',heroSvcBtn:'सभी सेवाएं देखो',secTitle:'हमारी सेवाएं',secSub:'Category चुनें और अपनी सेवा पर click करके apply करें',contactTitle:'Helpline & Contact',contactSub:'किसी भी help के लिए हमसे संपर्क करें',c4h:'काम के घंटे',c2p:'Mon–Sat, 9AM–7PM',c3p:'Documents भेजो, status पूछो',waFloatTxt:'WhatsApp पे Message करो',lblName:'आपका पूरा नाम *',lblPhone:'Mobile Number *',lblAddr:'Village / Mohalla / Ward',lblNote:'कोई और जानकारी (optional)',lblDocs:'Documents Upload करो (photo/PDF)',payTitle:'Payment करो',qrHint:'📱 Kisi bhi UPI app se scan karo',lblSs:'Payment Screenshot Attach करो *',ssHint:'Screenshot ya Photo click karo',submitTxt:'Application Submit Karo',applyBtn:'Apply करो',docsLabel:'जरूरी Documents:',successH:'Application Submit Ho Gayi!',successP:'Sunny bhai aapko jald contact karenge. Apna mobile paas rakhein.',alertName:'Apna naam bharna zaroori hai!',alertPhone:'Sahi 10 digit mobile number bharo!',alertSS:'Payment screenshot attach karna zaroori hai!',submitting:'Submit ho raha hai...',cats:['सभी','सरकारी प्रमाण पत्र','पहचान व टैक्स','पासपोर्ट व सरकारी फॉर्म','शिक्षा','डिजिटल सेवाएं','जमीन व संपत्ति'],copyDone:'Copied!'},
+  en:{heroH1:'Your Service, Our Commitment',heroP:'Government documents, certificates, ITR, passport and more — all in one place',chip2:'21+ Services',heroWaBtn:'Ask on WhatsApp',heroSvcBtn:'View All Services',secTitle:'Our Services',secSub:'Select a category and click on any service to apply',contactTitle:'Helpline & Contact',contactSub:'Reach out to us for any assistance',c4h:'Working Hours',c2p:'Mon–Sat, 9AM–7PM',c3p:'Send documents, ask for status',waFloatTxt:'Message on WhatsApp',lblName:'Your Full Name *',lblPhone:'Mobile Number *',lblAddr:'Village / Mohalla / Ward',lblNote:'Any other info (optional)',lblDocs:'Upload Documents (photo/PDF)',payTitle:'Make Payment',qrHint:'📱 Scan from any UPI app',lblSs:'Attach Payment Screenshot *',ssHint:'Take screenshot or photo',submitTxt:'Submit Application',applyBtn:'Apply Now',docsLabel:'Required Documents:',successH:'Application Submitted!',successP:'Sunny bhai will contact you soon. Please keep your phone nearby.',alertName:'Please enter your name!',alertPhone:'Please enter a valid 10-digit mobile number!',alertSS:'Please attach payment screenshot!',submitting:'Submitting...',cats:['All','Govt Certificates','Identity & Tax','Passport & Govt Forms','Education','Digital Services','Land & Property'],copyDone:'Copied!'}
+};
+function T(){return TR[lang];}
+
+var services=[
+  {hi:'जाति प्रमाण पत्र',en:'Caste Certificate',cat:0,icon:'ti-certificate',bg:'#E6F1FB',ic:'#185FA5',fee:'₹50',dhi:['Aadhar Card','Ration Card','Self Declaration','Passport photo'],den:['Aadhar Card','Ration Card','Self Declaration','Passport photo']},
+  {hi:'निवास प्रमाण पत्र',en:'Residential Certificate',cat:0,icon:'ti-home-2',bg:'#E1F5EE',ic:'#0F6E56',fee:'₹30',dhi:['Aadhar Card','Ration Card','Passport photo'],den:['Aadhar Card','Ration Card','Passport photo']},
+  {hi:'आय प्रमाण पत्र',en:'Income Certificate',cat:0,icon:'ti-cash',bg:'#FAEEDA',ic:'#854F0B',fee:'₹50',dhi:['Aadhar Card','Ration Card','Self Declaration'],den:['Aadhar Card','Ration Card','Self Declaration']},
+  {hi:'जन्म प्रमाण पत्र',en:'Birth Certificate',cat:0,icon:'ti-baby-carriage',bg:'#FBEAF0',ic:'#993556',fee:'₹40',dhi:['Hospital discharge slip','माता-पिता का Aadhar Card','Ration Card'],den:['Hospital discharge slip','Parents Aadhar Card','Ration Card']},
+  {hi:'किसान Registration',en:'Kisan Registration',cat:0,icon:'ti-plant',bg:'#EAF3DE',ic:'#3B6D11',fee:'₹60',dhi:['Aadhar Card','खसरा/खतौनी','Bank passbook','Passport photo'],den:['Aadhar Card','Khasra/Khatauni','Bank passbook','Passport photo']},
+  {hi:'Voter ID Card',en:'Voter ID Card',cat:1,icon:'ti-id-badge',bg:'#EEEDFE',ic:'#534AB7',fee:'Free',dhi:['Aadhar Card','Passport photo','Age proof'],den:['Aadhar Card','Passport photo','Age proof']},
+  {hi:'Aadhar Update',en:'Aadhar Update Guidance',cat:1,icon:'ti-map-pin',bg:'#E6F1FB',ic:'#185FA5',fee:'₹50',dhi:['Current address proof','Old Aadhar Card','Linked mobile number'],den:['Current address proof','Old Aadhar Card','Linked mobile number']},
+  {hi:'PAN Card Apply/Correction',en:'PAN Card Apply/Correction',cat:1,icon:'ti-credit-card',bg:'#FAEEDA',ic:'#854F0B',fee:'₹100',dhi:['Aadhar Card','Passport photo','Signature on white paper'],den:['Aadhar Card','Passport photo','Signature on white paper']},
+  {hi:'Income Tax Return (ITR)',en:'Income Tax Return (ITR)',cat:1,icon:'ti-receipt-tax',bg:'#EAF3DE',ic:'#3B6D11',fee:'₹200',dhi:['PAN Card','Aadhar Card','Form 16 / Salary slip','Bank statement'],den:['PAN Card','Aadhar Card','Form 16 / Salary slip','Bank statement']},
+  {hi:'Passport Application',en:'Passport Application',cat:2,icon:'ti-passport',bg:'#EEEDFE',ic:'#534AB7',fee:'₹300',dhi:['Aadhar Card','Birth Certificate','10th Marksheet','Passport photo (2)'],den:['Aadhar Card','Birth Certificate','10th Marksheet','2 Passport photos']},
+  {hi:'Government Forms',en:'Government Forms',cat:2,icon:'ti-forms',bg:'#E6F1FB',ic:'#185FA5',fee:'₹20',dhi:['सम्बन्धित ID proof','Form ke anusar details'],den:['Relevant ID proof','Details as per form']},
+  {hi:'Driving Licence',en:'Driving Licence',cat:2,icon:'ti-steering-wheel',bg:'#E1F5EE',ic:'#0F6E56',fee:'₹200',dhi:['Aadhar Card','Age proof','Medical certificate','Passport photo'],den:['Aadhar Card','Age proof','Medical certificate','Passport photo']},
+  {hi:'Scholarship Form',en:'Scholarship Forms',cat:3,icon:'ti-school',bg:'#FBEAF0',ic:'#993556',fee:'₹50',dhi:['Marksheets','Aadhar Card','Caste certificate','Bank passbook','Income certificate'],den:['Marksheets','Aadhar Card','Caste certificate','Bank passbook','Income certificate']},
+  {hi:'Exam Form Filling',en:'Exam Form Filling',cat:3,icon:'ti-pencil',bg:'#EEEDFE',ic:'#534AB7',fee:'₹50',dhi:['Marksheets','Aadhar Card','Passport photo'],den:['Marksheets','Aadhar Card','Passport photo']},
+  {hi:'Resume बनाना',en:'Resume Creation',cat:3,icon:'ti-file-cv',bg:'#E1F5EE',ic:'#0F6E56',fee:'₹80',dhi:['Personal details','Education details','Work experience (if any)'],den:['Personal details','Education details','Work experience (if any)']},
+  {hi:'Online Bill Payment',en:'Online Bill Payment',cat:4,icon:'ti-bolt',bg:'#FAEEDA',ic:'#854F0B',fee:'Free',dhi:['Bill copy','Consumer number'],den:['Bill copy','Consumer number']},
+  {hi:'Ticket Booking',en:'Ticket Booking',cat:4,icon:'ti-ticket',bg:'#E6F1FB',ic:'#185FA5',fee:'₹30',dhi:['Aadhar Card','Travel dates','Destination details'],den:['Aadhar Card','Travel dates','Destination details']},
+  {hi:'Mobile Recharge',en:'Mobile Recharge',cat:4,icon:'ti-device-mobile',bg:'#EAF3DE',ic:'#3B6D11',fee:'As per plan',dhi:['Mobile number'],den:['Mobile number']},
+  {hi:'Printing & Scanning',en:'Document Printing/Scanning',cat:4,icon:'ti-printer',bg:'#F1EFE8',ic:'#5F5E5A',fee:'₹2/page',dhi:['Document ya file ready rakhein'],den:['Document or file ready']},
+  {hi:'जमीन रसीद',en:'Jameen Rashid',cat:5,icon:'ti-file-description',bg:'#FAEEDA',ic:'#854F0B',fee:'₹30',dhi:['खसरा/खतौनी number','Aadhar Card','Plot details'],den:['Khasra/Khatauni number','Aadhar Card','Plot details']},
+  {hi:'दाखिल खारिज',en:'Dakhil Kharij',cat:5,icon:'ti-transfer',bg:'#EAF3DE',ic:'#3B6D11',fee:'₹100',dhi:['Sale deed/Registry','Old Khatauni','Aadhar Card (buyer+seller)','Stamp paper'],den:['Sale deed/Registry','Old Khatauni','Aadhar Card (buyer+seller)','Stamp paper']}
+];
+
+function setLang(l){
+  lang=l;
+  document.getElementById('btn-hi').className='lang-btn'+(l==='hi'?' active':'');
+  document.getElementById('btn-en').className='lang-btn'+(l==='en'?' active':'');
+  var t=T();
+  function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  s('hero-h1',t.heroH1);s('hero-p',t.heroP);s('chip2',t.chip2);s('hero-wa-btn',t.heroWaBtn);s('hero-svc-btn',t.heroSvcBtn);
+  s('sec-title',t.secTitle);s('sec-sub',t.secSub);s('contact-title',t.contactTitle);s('contact-sub',t.contactSub);
+  s('c4h',t.c4h);s('c2p',t.c2p);s('wa-float-txt',t.waFloatTxt);
+  s('lbl-name',t.lblName);s('lbl-phone',t.lblPhone);s('lbl-addr',t.lblAddr);s('lbl-note',t.lblNote);s('lbl-docs',t.lblDocs);
+  s('pay-title',t.payTitle);s('qr-hint',t.qrHint);s('lbl-ss',t.lblSs);s('ss-hint',t.ssHint);s('submit-txt',t.submitTxt);
+  document.getElementById('c3p').innerHTML=t.c3p+'<br><a href="https://wa.me/919546661632" style="color:#1D9E75;font-weight:600">Chat \u2192</a>';
+  activeCat='';renderCats();renderServices();
+}
+
+function renderCats(){
+  var el=document.getElementById('cat-tabs');el.innerHTML='';
+  var cats=T().cats;if(!activeCat)activeCat=cats[0];
+  cats.forEach(function(c){
+    var b=document.createElement('button');b.className='cat-tab'+(c===activeCat?' active':'');b.textContent=c;
+    b.onclick=function(){activeCat=c;renderCats();renderServices();};el.appendChild(b);
+  });
+}
+
+function renderServices(){
+  var g=document.getElementById('svc-grid');g.innerHTML='';
+  var catIdx=T().cats.indexOf(activeCat);
+  var list=catIdx===0?services:services.filter(function(sv){return sv.cat===(catIdx-1);});
+  list.forEach(function(sv){
+    var idx=services.indexOf(sv);var nm=lang==='hi'?sv.hi:sv.en;
+    var d=document.createElement('div');d.className='svc-card';
+    d.innerHTML='<div class="svc-icon" style="background:'+sv.bg+'"><i class="ti '+sv.icon+'" style="font-size:20px;color:'+sv.ic+'"></i></div><h3>'+nm+'</h3><span class="tag-fee">'+sv.fee+'</span><button class="apply-btn" onclick="openModal('+idx+')">'+T().applyBtn+'</button>';
+    g.appendChild(d);
+  });
+}
+
+function openModal(i){
+  currentSvc=services[i];ssBase64=null;
+  var t=T();var nm=lang==='hi'?currentSvc.hi:currentSvc.en;var docs=lang==='hi'?currentSvc.dhi:currentSvc.den;
+  document.getElementById('modal-title').textContent=nm;
+  document.getElementById('docs-box').innerHTML='<p><i class="ti ti-paperclip"></i> '+t.docsLabel+'</p><ul>'+docs.map(function(d){return '<li><i class="ti ti-circle-check"></i> '+d+'</li>';}).join('')+'</ul>';
+  document.getElementById('pay-amount').textContent=currentSvc.fee;
+  document.getElementById('payment-box').style.display=currentSvc.fee==='Free'?'none':'block';
+  document.getElementById('success-card').style.display='none';
+  document.getElementById('form-area').style.display='block';
+  ['f-name','f-phone','f-address','f-note'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('f-screenshot').value='';document.getElementById('ss-preview').style.display='none';
+  document.getElementById('f-files').value='';
+  document.getElementById('submit-btn').disabled=false;
+  document.getElementById('overlay').classList.add('open');document.body.style.overflow='hidden';
+}
+
+function closeModal(){document.getElementById('overlay').classList.remove('open');document.body.style.overflow='';}
+function openWA(msg){window.open('https://wa.me/919546661632?text='+encodeURIComponent(msg),'_blank');}
+
+function previewSS(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var imgEl=new Image();
+    imgEl.onload=function(){
+      var canvas=document.createElement('canvas');
+      var max=800; var w=imgEl.width,h=imgEl.height;
+      if(w>max||h>max){ if(w>h){h=Math.round(h*max/w);w=max;}else{w=Math.round(w*max/h);h=max;} }
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(imgEl,0,0,w,h);
+      ssBase64=canvas.toDataURL('image/jpeg',0.75);
+      var prev=document.getElementById('ss-preview');prev.src=ssBase64;prev.style.display='block';
+    };
+    imgEl.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function copyUPI(){
+  navigator.clipboard.writeText('sunny887733gupta-3@okaxis').then(function(){
+    var btn=document.getElementById('copy-upi-btn');btn.textContent=T().copyDone;
+    setTimeout(function(){btn.textContent='Copy';},2000);
+  });
+}
+
+async function submitApp(){
+  var t=T();
+  var name=document.getElementById('f-name').value.trim();
+  var phone=document.getElementById('f-phone').value.trim();
+  var addr=document.getElementById('f-address').value.trim();
+  var note=document.getElementById('f-note').value.trim();
+  var isFree=currentSvc.fee==='Free';
+  if(!name){alert(t.alertName);return;}
+  if(!phone||phone.length<10){alert(t.alertPhone);return;}
+  if(!isFree&&!ssBase64){alert(t.alertSS);return;}
+  document.getElementById('submit-btn').disabled=true;
+  document.getElementById('spinner').style.display='inline-block';
+  document.getElementById('submit-icon').style.display='none';
+  document.getElementById('submit-txt').textContent=t.submitting;
+
+  // Read + compress document files before saving
+  var docFiles=document.getElementById('f-files').files;
+  var docsArray=[];
+  await Promise.all(Array.from(docFiles).map(function(file){
+    return new Promise(function(resolve){
+      if(file.type==='application/pdf'){
+        // PDF: store as base64 directly (no compression)
+        var r=new FileReader();
+        r.onload=function(e){ docsArray.push({name:file.name,type:file.type,data:e.target.result}); resolve(); };
+        r.readAsDataURL(file);
+      } else {
+        // Image: compress to max 800px, quality 0.7
+        var r=new FileReader();
+        r.onload=function(e){
+          var img=new Image();
+          img.onload=function(){
+            var canvas=document.createElement('canvas');
+            var max=800;
+            var w=img.width, h=img.height;
+            if(w>max||h>max){ if(w>h){ h=Math.round(h*max/w); w=max; } else { w=Math.round(w*max/h); h=max; } }
+            canvas.width=w; canvas.height=h;
+            canvas.getContext('2d').drawImage(img,0,0,w,h);
+            var compressed=canvas.toDataURL('image/jpeg',0.7);
+            docsArray.push({name:file.name,type:'image/jpeg',data:compressed});
+            resolve();
+          };
+          img.src=e.target.result;
+        };
+        r.readAsDataURL(file);
+      }
+    });
+  }));
+
+  var payload={service_name:lang==='hi'?currentSvc.hi:currentSvc.en,applicant_name:name,mobile:phone,address:addr||null,notes:note||null,payment_amount:currentSvc.fee,payment_screenshot:ssBase64||null,documents:JSON.stringify(docsArray),status:'pending'};
+  try{
+    var res=await fetch(SUPABASE_URL+'/rest/v1/applications',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    if(res.ok){
+      var data=await res.json();var refId=data[0]?data[0].id.substring(0,8).toUpperCase():'N/A';
+      document.getElementById('form-area').style.display='none';
+      var sc=document.getElementById('success-card');sc.style.display='block';
+      document.getElementById('success-h').textContent=t.successH;
+      document.getElementById('success-p').textContent=t.successP;
+      document.getElementById('ref-id').textContent='Reference ID: '+refId;
+    }else{
+      var err=await res.json();alert('Error: '+(err.message||'Submit nahi hua. Dobara try karo.'));resetBtn();
+    }
+  }catch(e){alert(lang==='hi'?'Network error! Internet connection check karo.':'Network error! Check your internet.');resetBtn();}
+}
+
+function resetBtn(){
+  document.getElementById('submit-btn').disabled=false;
+  document.getElementById('spinner').style.display='none';
+  document.getElementById('submit-icon').style.display='inline';
+  document.getElementById('submit-txt').textContent=T().submitTxt;
+}
+
+document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+setLang('hi');
+</script>
+</body>
+</html>

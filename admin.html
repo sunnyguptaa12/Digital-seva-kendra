@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel — Digital Seva Kendra</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0C447C,#185FA5)}
+.login-box{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.login-logo{text-align:center;margin-bottom:1.5rem}
+.login-logo i{font-size:44px;color:#185FA5;display:block;margin-bottom:8px}
+.login-logo h2{font-size:20px;font-weight:700;color:#0C447C}
+.login-logo p{font-size:13px;color:#64748b;margin-top:3px}
+.fg{margin-bottom:14px}
+.fg label{font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px}
+.fg input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit;outline:none}
+.fg input:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.login-btn{width:100%;background:#185FA5;color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.login-btn:hover{background:#0C447C}
+.login-err{color:#dc2626;font-size:12px;text-align:center;margin-top:8px;display:none;padding:6px;background:#fee2e2;border-radius:6px}
+.forgot-link{text-align:center;margin-top:12px}
+.forgot-link button{background:none;border:none;color:#185FA5;font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline}
+.main{display:none}
+.topbar{background:#0C447C;color:#fff;padding:.75rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:16px;font-weight:700}
+.topbar-sub{font-size:11px;color:#93c5fd}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tbtn{border:none;color:#fff;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;font-weight:500}
+.tbtn-blue{background:#185FA5}.tbtn-blue:hover{background:#1e40af}
+.tbtn-yellow{background:rgba(255,200,0,.25)}.tbtn-yellow:hover{background:rgba(255,200,0,.4)}
+.tbtn-gray{background:rgba(255,255,255,.15)}.tbtn-gray:hover{background:rgba(255,255,255,.28)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;padding:1.2rem 1.5rem}
+.stat-card{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e2e8f0;display:flex;align-items:center;gap:12px}
+.stat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-icon i{font-size:22px}
+.stat-val{font-size:24px;font-weight:800;line-height:1}
+.stat-lbl{font-size:11px;color:#64748b;margin-top:2px}
+.view-tabs{padding:0 1.5rem .75rem;display:flex;gap:10px;flex-wrap:wrap}
+.view-tab{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:9px 18px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;color:#64748b;display:inline-flex;align-items:center;gap:7px}
+.view-tab:hover{border-color:#185FA5;color:#185FA5}
+.view-tab.active{background:#185FA5;color:#fff;border-color:#185FA5}
+.vtab-badge{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700;background:rgba(0,0,0,.1)}
+.view-tab.active .vtab-badge{background:rgba(255,255,255,.25);color:#fff}
+.vb-y{background:#fef3c7;color:#92400e}
+.vb-g{background:#dcfce7;color:#166534}
+.vb-r{background:#fee2e2;color:#991b1b}
+.filters{padding:0 1.5rem 1rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:18px}
+.search-box input{width:100%;padding:9px 12px 9px 36px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff}
+.fsel{padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff;cursor:pointer}
+.table-wrap{padding:0 1.5rem 2rem;overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;min-width:700px}
+.tbl thead{background:#f8fafc}
+.tbl th{padding:10px 14px;font-size:12px;font-weight:700;color:#64748b;text-align:left;border-bottom:1px solid #e2e8f0;white-space:nowrap}
+.tbl td{padding:10px 14px;font-size:13px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f8fafc}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.bp{background:#fef3c7;color:#92400e}
+.bc{background:#dcfce7;color:#166534}
+.br{background:#fee2e2;color:#991b1b}
+.abtn{border:none;padding:5px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:600;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.ab-blue{background:#E6F1FB;color:#185FA5}.ab-blue:hover{background:#bfdbfe}
+.ab-wa{background:#d1fae5;color:#065f46}.ab-wa:hover{background:#a7f3d0}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;padding:1rem;overflow-y:auto}
+.overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.dmodal{background:#fff;border-radius:16px;width:100%;max-width:640px;margin:1rem auto;overflow:hidden}
+.dhead{background:#0C447C;color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center}
+.dhead h3{font-size:16px;font-weight:700}
+.dclose{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1}
+.dbody{padding:1.5rem;max-height:80vh;overflow-y:auto}
+.dsec{margin-bottom:1.4rem}
+.dsec-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}
+.drow{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.dlabel{font-size:12px;color:#64748b;min-width:130px;flex-shrink:0;padding-top:1px}
+.dval{font-size:13px;font-weight:600;color:#1e293b;flex:1}
+.ftabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.ftab{border:1px solid #d1d5db;background:#f8fafc;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;color:#64748b;font-family:inherit}
+.ftab.active{background:#185FA5;color:#fff;border-color:#185FA5}
+.file-viewer{background:#1e293b;border-radius:12px;padding:1rem;min-height:180px;display:flex;align-items:center;justify-content:center}
+.file-viewer img{max-width:100%;max-height:360px;object-fit:contain;border-radius:8px;display:block}
+.no-file{color:#94a3b8;text-align:center}
+.no-file i{font-size:40px;display:block;margin-bottom:8px;color:#475569}
+.file-acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+.fbtn{border:none;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.fbtn-dl{background:#185FA5;color:#fff}.fbtn-dl:hover{background:#0C447C}
+.fbtn-fs{background:#374151;color:#fff}.fbtn-fs:hover{background:#1f2937}
+.ssel{padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:100%;margin-bottom:10px}
+.ubtn{width:100%;background:#185FA5;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.ubtn:hover{background:#0C447C}
+.qbtns{display:flex;gap:8px;flex-wrap:wrap}
+.qbtn{border:none;padding:9px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.qbtn-wa{background:#d1fae5;color:#065f46}.qbtn-wa:hover{background:#a7f3d0}
+.qbtn-call{background:#E6F1FB;color:#185FA5}.qbtn-call:hover{background:#bfdbfe}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:999;flex-direction:column;align-items:center;justify-content:center;padding:1rem}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:8px}
+.lb-top{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:900px;margin-bottom:12px}
+.lb-title{color:#fff;font-size:14px;font-weight:600}
+.lb-acts{display:flex;gap:8px}
+.lbbtn{border:none;padding:7px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.lbbtn-dl{background:#185FA5;color:#fff}
+.lbbtn-cl{background:#374151;color:#fff}
+.minput{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;font-family:inherit;outline:none;margin-bottom:0}
+.minput:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.mlabel{font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px}
+.mfg{margin-bottom:12px}
+.err-box{color:#dc2626;font-size:12px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;margin-bottom:10px}
+.note-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px;margin-top:10px}
+.warn-box{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:10px;margin-top:10px}
+.empty{text-align:center;padding:3rem;color:#94a3b8}
+.empty i{font-size:48px;display:block;margin-bottom:12px}
+.loading{text-align:center;padding:3rem;color:#94a3b8}
+.spin{display:inline-block;width:32px;height:32px;border:3px solid #e2e8f0;border-top-color:#185FA5;border-radius:50%;animation:sp .8s linear infinite;margin-bottom:12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1e293b;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;display:none}
+@media(max-width:600px){.stats,.filters,.table-wrap,.view-tabs{padding-left:1rem;padding-right:1rem}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <i class="ti ti-shield-lock"></i>
+      <h2>Admin Panel</h2>
+      <p>Digital Seva Kendra — Sunny Gupta</p>
+    </div>
+    <div class="fg"><label>Username</label><input type="text" id="l-user" placeholder="Enter username"/></div>
+    <div class="fg"><label>Password</label><input type="password" id="l-pass" placeholder="Enter password"/></div>
+    <button class="login-btn" id="login-btn">Login &nbsp;<i class="ti ti-arrow-right"></i></button>
+    <p class="login-err" id="login-err">Incorrect username or password!</p>
+    <div class="forgot-link"><button id="forgot-btn">Forgot Password?</button></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title"><i class="ti ti-layout-dashboard" style="margin-right:6px"></i>Admin Panel</div>
+      <div class="topbar-sub">Digital Seva Kendra — Sunny Gupta</div>
+    </div>
+    <div class="topbar-right">
+      <button class="tbtn tbtn-blue" id="refresh-btn"><i class="ti ti-refresh"></i> Refresh</button>
+      <button class="tbtn tbtn-yellow" id="cp-btn"><i class="ti ti-lock"></i> Change Password</button>
+      <button class="tbtn tbtn-gray" id="logout-btn"><i class="ti ti-logout"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#E6F1FB"><i class="ti ti-file-text" style="color:#185FA5"></i></div>
+      <div><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Total</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fef3c7"><i class="ti ti-clock" style="color:#d97706"></i></div>
+      <div><div class="stat-val" id="st-pending">0</div><div class="stat-lbl">Pending</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#dcfce7"><i class="ti ti-circle-check" style="color:#16a34a"></i></div>
+      <div><div class="stat-val" id="st-done">0</div><div class="stat-lbl">Completed</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fee2e2"><i class="ti ti-x" style="color:#dc2626"></i></div>
+      <div><div class="stat-val" id="st-reject">0</div><div class="stat-lbl">Rejected</div></div>
+    </div>
+  </div>
+
+  <div class="view-tabs">
+    <button class="view-tab active" id="vtab-pending"><i class="ti ti-clock"></i> Pending <span class="vtab-badge vb-y" id="cnt-pending">0</span></button>
+    <button class="view-tab" id="vtab-completed"><i class="ti ti-circle-check"></i> Completed <span class="vtab-badge vb-g" id="cnt-completed">0</span></button>
+    <button class="view-tab" id="vtab-rejected"><i class="ti ti-x"></i> Rejected <span class="vtab-badge vb-r" id="cnt-rejected">0</span></button>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <i class="ti ti-search"></i>
+      <input type="text" id="srch" placeholder="Search by name or mobile..."/>
+    </div>
+    <select class="fsel" id="sv-fil">
+      <option value="">All Services</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <div id="tbl-area"><div class="loading"><div class="spin"></div><p>Loading...</p></div></div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="d-overlay">
+  <div class="dmodal">
+    <div class="dhead">
+      <h3 id="d-title">Application Detail</h3>
+      <button class="dclose" id="d-close">&#x2715;</button>
+    </div>
+    <div class="dbody">
+      <div class="dsec">
+        <div class="dsec-title">Applicant Information</div>
+        <div class="drow"><span class="dlabel">Full Name</span><span class="dval" id="d-name">-</span></div>
+        <div class="drow"><span class="dlabel">Mobile</span><span class="dval" id="d-mob">-</span></div>
+        <div class="drow"><span class="dlabel">Address</span><span class="dval" id="d-addr">-</span></div>
+        <div class="drow"><span class="dlabel">Service</span><span class="dval" id="d-svc">-</span></div>
+        <div class="drow"><span class="dlabel">Fee</span><span class="dval" id="d-fee">-</span></div>
+        <div class="drow"><span class="dlabel">Notes</span><span class="dval" id="d-notes">-</span></div>
+        <div class="drow"><span class="dlabel">Submitted</span><span class="dval" id="d-date">-</span></div>
+        <div class="drow"><span class="dlabel">Status</span><span class="dval" id="d-sbadge">-</span></div>
+      </div>
+      <div class="dsec">
+        <div class="dsec-title">Uploaded Files</div>
+        <div class="ftabs" id="ftabs"></div>
+        <div class="file-viewer" id="file-viewer">
+          <div class="no-file"><i class="ti ti-photo-off"></i><p>No files uploaded</p></div>
+        </div>
+        <div class="file-acts" id="file-acts" style="display:none">
+          <button class="fbtn fbtn-dl" id="dl-btn"><i class="ti ti-download"></i> Download</button>
+          <button class="fbtn fbtn-fs" id="fs-btn"><i class="ti ti-arrows-maximize"></i> Fullscreen</button>
+        </div>
+      </div>
+      <div class="dsec">
+        <div class="dsec-title">Update Status</div>
+        <select class="ssel" id="d-ssel">
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <button class="ubtn" id="status-update-btn"><i class="ti ti-check"></i> Update Status</button>
+      </div>
+      <div class="dsec">
+        <div class="dsec-title">Quick Actions</div>
+        <div class="qbtns">
+          <button class="qbtn qbtn-wa" id="wa-btn"><i class="ti ti-brand-whatsapp"></i> Send WhatsApp</button>
+          <button class="qbtn qbtn-call" id="call-btn"><i class="ti ti-phone"></i> Call Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHANGE PASSWORD -->
+<div class="overlay" id="cp-overlay">
+  <div class="dmodal" style="max-width:400px">
+    <div class="dhead">
+      <h3><i class="ti ti-lock" style="margin-right:6px"></i>Change Password</h3>
+      <button class="dclose" id="cp-close">&#x2715;</button>
+    </div>
+    <div class="dbody">
+      <div class="dsec-title">Update Admin Password</div>
+      <br/>
+      <div class="mfg"><label class="mlabel">Current Password</label><input class="minput" type="password" id="cp-cur" placeholder="Enter current password"/></div>
+      <div class="mfg"><label class="mlabel">New Password</label><input class="minput" type="password" id="cp-new" placeholder="Minimum 6 characters"/></div>
+      <div class="mfg" style="margin-bottom:14px"><label class="mlabel">Confirm Password</label><input class="minput" type="password" id="cp-conf" placeholder="Re-enter new password"/></div>
+      <div class="err-box" id="cp-err"></div>
+      <button class="ubtn" id="cp-save-btn"><i class="ti ti-check"></i> Update Password</button>
+      <div class="warn-box" style="margin-top:12px">
+        <p style="font-size:11px;color:#92400e;font-weight:600">Important Note</p>
+        <p style="font-size:11px;color:#78350f;margin-top:3px">Password is saved in browser storage. If browser data is cleared, default password will be restored. Keep a backup.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div class="overlay" id="fp-overlay">
+  <div class="dmodal" style="max-width:400px">
+    <div class="dhead">
+      <h3><i class="ti ti-key" style="margin-right:6px"></i>Reset Password</h3>
+      <button class="dclose" id="fp-close">&#x2715;</button>
+    </div>
+    <div class="dbody">
+      <div id="fp-step1">
+        <div class="dsec-title">Verify Identity</div>
+        <br/>
+        <p style="font-size:13px;color:#64748b;margin-bottom:14px">Enter your secret recovery phrase to proceed.</p>
+        <div class="mfg"><label class="mlabel">Recovery Phrase</label><input class="minput" type="text" id="fp-phrase" placeholder="Enter recovery phrase"/></div>
+        <div class="err-box" id="fp-err1"></div>
+        <button class="ubtn" id="fp-verify-btn" style="margin-bottom:12px"><i class="ti ti-arrow-right"></i> Verify</button>
+        <div class="note-box">
+          <p style="font-size:11px;color:#0369a1;font-weight:600">Default Recovery Phrase:</p>
+          <p style="font-size:13px;color:#0c4a6e;margin-top:4px;font-family:monospace;font-weight:700">digitalseva@sunny</p>
+        </div>
+      </div>
+      <div id="fp-step2" style="display:none">
+        <div class="dsec-title">Set New Password</div>
+        <br/>
+        <div class="mfg"><label class="mlabel">New Password</label><input class="minput" type="password" id="fp-new" placeholder="Minimum 6 characters"/></div>
+        <div class="mfg" style="margin-bottom:14px"><label class="mlabel">Confirm Password</label><input class="minput" type="password" id="fp-conf" placeholder="Re-enter new password"/></div>
+        <div class="err-box" id="fp-err2"></div>
+        <button class="ubtn" id="fp-reset-btn"><i class="ti ti-check"></i> Reset Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-top">
+    <span class="lb-title" id="lb-title">File Preview</span>
+    <div class="lb-acts">
+      <button class="lbbtn lbbtn-dl" id="lb-dl-btn"><i class="ti ti-download"></i> Download</button>
+      <button class="lbbtn lbbtn-cl" id="lb-close-btn"><i class="ti ti-x"></i> Close</button>
+    </div>
+  </div>
+  <img id="lb-img" src="" alt="preview"/>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  var SUPA_URL = 'https://fptrdjqszoysvyxgjifj.supabase.co';
+  var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwdHJkanFzem95c3Z5eGdqaWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3NDYyODksImV4cCI6MjA5NjMyMjI4OX0.SnCSlR6M1rSkHoKzTaxpkHECw2RXmY71iT_1Vcdpygc';
+  var ADMIN_USER = 'sunny';
+  var PASS_DEFAULT = 'seva@2026';
+  var RECOVERY_DEFAULT = 'digitalseva@sunny';
+
+  var allApps = [];
+  var curApp = null;
+  var curFiles = [];
+  var curFileIdx = 0;
+  var activeTab = 'pending';
+
+  function getPass() { return localStorage.getItem('admin_pass') || PASS_DEFAULT; }
+  function getRecovery() { return localStorage.getItem('recovery_phrase') || RECOVERY_DEFAULT; }
+
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(function() { t.style.display = 'none'; }, 3000);
+  }
+
+  function openOverlay(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ===== LOGIN ===== */
+  function doLogin() {
+    var u = document.getElementById('l-user').value.trim();
+    var p = document.getElementById('l-pass').value.trim();
+    if (u === ADMIN_USER && p === getPass()) {
+      document.getElementById('login-wrap').style.display = 'none';
+      document.getElementById('main').style.display = 'block';
+      loadApps();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+      document.getElementById('l-pass').value = '';
+    }
+  }
+
+  document.getElementById('login-btn').addEventListener('click', doLogin);
+  document.getElementById('l-pass').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+  document.getElementById('l-user').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+
+  document.getElementById('logout-btn').addEventListener('click', function() {
+    document.getElementById('main').style.display = 'none';
+    document.getElementById('login-wrap').style.display = 'flex';
+    document.getElementById('l-user').value = '';
+    document.getElementById('l-pass').value = '';
+    document.getElementById('login-err').style.display = 'none';
+  });
+
+  /* ===== LOAD DATA ===== */
+  document.getElementById('refresh-btn').addEventListener('click', loadApps);
+
+  async function loadApps() {
+    document.getElementById('tbl-area').innerHTML = '<div class="loading"><div class="spin"></div><p>Loading...</p></div>';
+    try {
+      var res = await fetch(SUPA_URL + '/rest/v1/applications?select=id,service_name,applicant_name,mobile,address,notes,payment_amount,payment_screenshot,documents,status,created_at&order=created_at.desc', {
+        headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+      });
+      var data = await res.json();
+      if (!res.ok) {
+        var msg = data.message || data.hint || data.error || JSON.stringify(data);
+        document.getElementById('tbl-area').innerHTML = '<div class="empty"><i class="ti ti-alert-triangle" style="color:#f59e0b"></i><p style="color:#92400e;font-weight:600">Supabase Error:</p><p style="font-size:12px;margin-top:6px;color:#78350f">' + msg + '</p><p style="font-size:12px;margin-top:10px;color:#64748b">Fix: Supabase → Settings → API → Add your GitHub Pages URL in CORS Allowed Origins. Also run the SQL to create the table and disable RLS.</p></div>';
+        return;
+      }
+      allApps = Array.isArray(data) ? data : [];
+      updateStats();
+      populateSvcFilter();
+      filterRender();
+      showToast('Loaded ' + allApps.length + ' applications');
+    } catch (e) {
+      document.getElementById('tbl-area').innerHTML = '<div class="empty"><i class="ti ti-wifi-off"></i><p>Network error: ' + e.message + '</p><p style="font-size:12px;margin-top:8px;color:#64748b">Make sure your GitHub Pages URL is added in Supabase CORS settings.</p></div>';
+    }
+  }
+
+  function updateStats() {
+    var p = allApps.filter(function(a) { return a.status === 'pending'; }).length;
+    var c = allApps.filter(function(a) { return a.status === 'completed'; }).length;
+    var r = allApps.filter(function(a) { return a.status === 'rejected'; }).length;
+    document.getElementById('st-total').textContent = allApps.length;
+    document.getElementById('st-pending').textContent = p;
+    document.getElementById('st-done').textContent = c;
+    document.getElementById('st-reject').textContent = r;
+    document.getElementById('cnt-pending').textContent = p;
+    document.getElementById('cnt-completed').textContent = c;
+    document.getElementById('cnt-rejected').textContent = r;
+  }
+
+  function populateSvcFilter() {
+    var sel = document.getElementById('sv-fil');
+    var cur = sel.value;
+    var seen = {};
+    var svcs = [];
+    allApps.forEach(function(a) {
+      if (a.service_name && !seen[a.service_name]) { seen[a.service_name] = 1; svcs.push(a.service_name); }
+    });
+    svcs.sort();
+    sel.innerHTML = '<option value="">All Services</option>' + svcs.map(function(s) {
+      return '<option value="' + s + '">' + s + '</option>';
+    }).join('');
+    sel.value = cur;
+  }
+
+  /* ===== TABS ===== */
+  document.getElementById('vtab-pending').addEventListener('click', function() { setTab('pending'); });
+  document.getElementById('vtab-completed').addEventListener('click', function() { setTab('completed'); });
+  document.getElementById('vtab-rejected').addEventListener('click', function() { setTab('rejected'); });
+
+  function setTab(tab) {
+    activeTab = tab;
+    document.getElementById('vtab-pending').className = 'view-tab' + (tab === 'pending' ? ' active' : '');
+    document.getElementById('vtab-completed').className = 'view-tab' + (tab === 'completed' ? ' active' : '');
+    document.getElementById('vtab-rejected').className = 'view-tab' + (tab === 'rejected' ? ' active' : '');
+    filterRender();
+  }
+
+  /* ===== FILTER & RENDER ===== */
+  document.getElementById('srch').addEventListener('input', filterRender);
+  document.getElementById('sv-fil').addEventListener('change', filterRender);
+
+  function filterRender() {
+    var q = document.getElementById('srch').value.toLowerCase();
+    var sv = document.getElementById('sv-fil').value;
+    var list = allApps.filter(function(a) {
+      var matchTab = a.status === activeTab;
+      var matchQ = !q || (a.applicant_name || '').toLowerCase().indexOf(q) !== -1 || (a.mobile || '').indexOf(q) !== -1;
+      var matchSv = !sv || a.service_name === sv;
+      return matchTab && matchQ && matchSv;
+    });
+    renderTable(list);
+  }
+
+  function renderTable(list) {
+    var msgs = { pending: 'No pending applications', completed: 'No completed applications yet', rejected: 'No rejected applications' };
+    if (!list.length) {
+      document.getElementById('tbl-area').innerHTML = '<div class="empty"><i class="ti ti-inbox"></i><p>' + (msgs[activeTab] || 'No applications') + '</p></div>';
+      return;
+    }
+    var rows = '';
+    for (var i = 0; i < list.length; i++) {
+      var a = list[i];
+      var badge = a.status === 'completed' ? '<span class="badge bc">Completed</span>' : a.status === 'rejected' ? '<span class="badge br">Rejected</span>' : '<span class="badge bp">Pending</span>';
+      var dt = a.created_at ? new Date(a.created_at).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+      var fc = 0;
+      if (a.payment_screenshot) fc++;
+      try { fc += JSON.parse(a.documents || '[]').length; } catch (ex) {}
+      var ftag = fc > 0 ? '<span style="color:#16a34a;font-weight:600">Files: ' + fc + '</span>' : '<span style="color:#94a3b8">None</span>';
+      var safeId = a.id;
+      var safeMob = (a.mobile || '');
+      var safeSvc = (a.service_name || '');
+      rows += '<tr>'
+        + '<td style="font-weight:600">' + (a.applicant_name || '-') + '</td>'
+        + '<td><a href="tel:' + safeMob + '" style="color:#185FA5;font-weight:600">' + (safeMob || '-') + '</a></td>'
+        + '<td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + safeSvc + '">' + (safeSvc || '-') + '</td>'
+        + '<td style="font-weight:700;color:#185FA5">' + (a.payment_amount || '-') + '</td>'
+        + '<td>' + ftag + '</td>'
+        + '<td>' + badge + '</td>'
+        + '<td style="font-size:11px;color:#64748b">' + dt + '</td>'
+        + '<td><div style="display:flex;gap:6px">'
+        + '<button class="abtn ab-blue" data-id="' + safeId + '"><i class="ti ti-eye"></i> View</button>'
+        + '<button class="abtn ab-wa" data-mob="' + safeMob + '" data-svc="' + safeSvc + '"><i class="ti ti-brand-whatsapp"></i></button>'
+        + '</div></td>'
+        + '</tr>';
+    }
+
+    document.getElementById('tbl-area').innerHTML =
+      '<table class="tbl"><thead><tr>'
+      + '<th>Name</th><th>Mobile</th><th>Service</th><th>Fee</th><th>Files</th><th>Status</th><th>Date</th><th>Action</th>'
+      + '</tr></thead><tbody>' + rows + '</tbody></table>';
+
+    document.querySelectorAll('[data-id]').forEach(function(btn) {
+      btn.addEventListener('click', function() { openDetail(this.getAttribute('data-id')); });
+    });
+    document.querySelectorAll('[data-mob]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var mob = this.getAttribute('data-mob');
+        var svc = this.getAttribute('data-svc');
+        var msg = 'Hello! Regarding your ' + svc + ' application at Digital Seva Kendra.';
+        window.open('https://wa.me/91' + mob + '?text=' + encodeURIComponent(msg), '_blank');
+      });
+    });
+  }
+
+  /* ===== DETAIL ===== */
+  function openDetail(id) {
+    curApp = null;
+    for (var i = 0; i < allApps.length; i++) { if (allApps[i].id === id) { curApp = allApps[i]; break; } }
+    if (!curApp) return;
+
+    document.getElementById('d-title').textContent = curApp.service_name || 'Application';
+    document.getElementById('d-name').textContent = curApp.applicant_name || '-';
+    document.getElementById('d-mob').innerHTML = '<a href="tel:' + (curApp.mobile || '') + '" style="color:#185FA5">' + (curApp.mobile || '-') + '</a>';
+    document.getElementById('d-addr').textContent = curApp.address || '-';
+    document.getElementById('d-svc').textContent = curApp.service_name || '-';
+    document.getElementById('d-fee').textContent = curApp.payment_amount || '-';
+    document.getElementById('d-notes').textContent = curApp.notes || '-';
+    document.getElementById('d-date').textContent = curApp.created_at ? new Date(curApp.created_at).toLocaleString('en-IN') : '-';
+    var bm = { completed: '<span class="badge bc">Completed</span>', rejected: '<span class="badge br">Rejected</span>', pending: '<span class="badge bp">Pending</span>' };
+    document.getElementById('d-sbadge').innerHTML = bm[curApp.status] || bm['pending'];
+    document.getElementById('d-ssel').value = curApp.status || 'pending';
+
+    curFiles = [];
+    if (curApp.payment_screenshot && curApp.payment_screenshot.length > 10) {
+      curFiles.push({ label: 'Payment Screenshot', src: curApp.payment_screenshot, isPdf: false, name: 'payment_screenshot.jpg' });
+    }
+    var rawDocs = curApp.documents;
+    if (rawDocs && rawDocs.length > 2) {
+      try {
+        var docs = JSON.parse(rawDocs);
+        if (Array.isArray(docs)) {
+          for (var j = 0; j < docs.length; j++) {
+            var d = docs[j];
+            if (d && d.data && d.data.length > 10) {
+              var isPdf = (d.type === 'application/pdf') || (d.name && d.name.toLowerCase().indexOf('.pdf') !== -1);
+              curFiles.push({ label: 'Document ' + (j + 1) + (d.name ? ' - ' + d.name : ''), src: d.data, isPdf: isPdf, name: d.name || ('document_' + (j + 1)) });
+            }
+          }
+        }
+      } catch (ex) { console.error('Docs parse error:', ex); }
+    }
+
+    buildFileTabs();
+    openOverlay('d-overlay');
+  }
+
+  document.getElementById('d-close').addEventListener('click', function() { closeOverlay('d-overlay'); });
+  document.getElementById('d-overlay').addEventListener('click', function(e) { if (e.target === this) closeOverlay('d-overlay'); });
+
+  function buildFileTabs() {
+    var tabs = document.getElementById('ftabs');
+    var viewer = document.getElementById('file-viewer');
+    var acts = document.getElementById('file-acts');
+    tabs.innerHTML = '';
+    if (!curFiles.length) {
+      viewer.innerHTML = '<div class="no-file"><i class="ti ti-photo-off"></i><p>No files uploaded</p></div>';
+      acts.style.display = 'none';
+      return;
+    }
+    for (var i = 0; i < curFiles.length; i++) {
+      (function(idx) {
+        var btn = document.createElement('button');
+        btn.className = 'ftab' + (idx === 0 ? ' active' : '');
+        btn.textContent = curFiles[idx].label;
+        btn.addEventListener('click', function() { selectFile(idx); });
+        tabs.appendChild(btn);
+      })(i);
+    }
+    selectFile(0);
+  }
+
+  function selectFile(i) {
+    curFileIdx = i;
+    var ftabEls = document.querySelectorAll('.ftab');
+    for (var k = 0; k < ftabEls.length; k++) {
+      ftabEls[k].className = 'ftab' + (k === i ? ' active' : '');
+    }
+    var f = curFiles[i];
+    var viewer = document.getElementById('file-viewer');
+    var acts = document.getElementById('file-acts');
+    if (!f) { viewer.innerHTML = '<div class="no-file"><i class="ti ti-photo-off"></i><p>No file</p></div>'; acts.style.display = 'none'; return; }
+    if (f.isPdf) {
+      viewer.innerHTML = '<div style="text-align:center;color:#94a3b8"><i class="ti ti-file-type-pdf" style="font-size:56px;color:#ef4444;display:block;margin-bottom:8px"></i><p style="font-size:13px">' + (f.name || 'PDF File') + '</p><p style="font-size:11px;margin-top:4px">Click Download to open</p></div>';
+    } else {
+      viewer.innerHTML = '<img src="' + f.src + '" alt="' + f.label + '" style="max-width:100%;max-height:360px;object-fit:contain;border-radius:8px;display:block"/>';
+    }
+    document.getElementById('lb-title').textContent = f.label;
+    acts.style.display = 'flex';
+  }
+
+  document.getElementById('dl-btn').addEventListener('click', function() { downloadFile(); });
+  document.getElementById('fs-btn').addEventListener('click', function() { fullscreenFile(); });
+  document.getElementById('lb-dl-btn').addEventListener('click', function() { downloadFile(); });
+
+  function downloadFile() {
+    var f = curFiles[curFileIdx];
+    if (!f) return;
+    var a = document.createElement('a');
+    a.href = f.src;
+    a.download = f.name || (f.label.replace(/ /g, '_') + (f.isPdf ? '.pdf' : '.jpg'));
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showToast('Download started!');
+  }
+
+  function fullscreenFile() {
+    var f = curFiles[curFileIdx];
+    if (!f) return;
+    if (f.isPdf) { downloadFile(); return; }
+    document.getElementById('lb-img').src = f.src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+
+  document.getElementById('lb-close-btn').addEventListener('click', function() { document.getElementById('lightbox').classList.remove('open'); });
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) document.getElementById('lightbox').classList.remove('open'); });
+
+  /* ===== STATUS UPDATE ===== */
+  document.getElementById('status-update-btn').addEventListener('click', async function() {
+    if (!curApp) return;
+    var ns = document.getElementById('d-ssel').value;
+    try {
+      var res = await fetch(SUPA_URL + '/rest/v1/applications?id=eq.' + curApp.id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY },
+        body: JSON.stringify({ status: ns })
+      });
+      if (res.ok) {
+        curApp.status = ns;
+        for (var i = 0; i < allApps.length; i++) { if (allApps[i].id === curApp.id) { allApps[i].status = ns; break; } }
+        updateStats();
+        setTab(ns);
+        closeOverlay('d-overlay');
+        showToast('Status updated! Moved to ' + ns + ' tab.');
+      } else { showToast('Update failed, try again!'); }
+    } catch (e) { showToast('Network error!'); }
+  });
+
+  /* ===== QUICK ACTIONS ===== */
+  document.getElementById('wa-btn').addEventListener('click', function() {
+    if (!curApp) return;
+    var msg = 'Hello ' + (curApp.applicant_name || '') + '! Regarding your ' + (curApp.service_name || '') + ' application at Digital Seva Kendra. How can we assist you?';
+    window.open('https://wa.me/91' + curApp.mobile + '?text=' + encodeURIComponent(msg), '_blank');
+  });
+  document.getElementById('call-btn').addEventListener('click', function() {
+    if (curApp && curApp.mobile) window.location.href = 'tel:' + curApp.mobile;
+  });
+
+  /* ===== CHANGE PASSWORD ===== */
+  document.getElementById('cp-btn').addEventListener('click', function() {
+    document.getElementById('cp-cur').value = '';
+    document.getElementById('cp-new').value = '';
+    document.getElementById('cp-conf').value = '';
+    document.getElementById('cp-err').style.display = 'none';
+    openOverlay('cp-overlay');
+  });
+  document.getElementById('cp-close').addEventListener('click', function() { closeOverlay('cp-overlay'); });
+  document.getElementById('cp-overlay').addEventListener('click', function(e) { if (e.target === this) closeOverlay('cp-overlay'); });
+
+  document.getElementById('cp-save-btn').addEventListener('click', function() {
+    var cur = document.getElementById('cp-cur').value;
+    var nw = document.getElementById('cp-new').value;
+    var conf = document.getElementById('cp-conf').value;
+    var err = document.getElementById('cp-err');
+    err.style.display = 'none';
+    if (!cur || !nw || !conf) { err.textContent = 'All fields are required!'; err.style.display = 'block'; return; }
+    if (cur !== getPass()) { err.textContent = 'Current password is incorrect!'; err.style.display = 'block'; return; }
+    if (nw.length < 6) { err.textContent = 'New password must be at least 6 characters!'; err.style.display = 'block'; return; }
+    if (nw !== conf) { err.textContent = 'Passwords do not match!'; err.style.display = 'block'; return; }
+    localStorage.setItem('admin_pass', nw);
+    closeOverlay('cp-overlay');
+    showToast('Password changed successfully!');
+  });
+
+  /* ===== FORGOT PASSWORD ===== */
+  document.getElementById('forgot-btn').addEventListener('click', function() {
+    document.getElementById('fp-phrase').value = '';
+    document.getElementById('fp-new').value = '';
+    document.getElementById('fp-conf').value = '';
+    document.getElementById('fp-err1').style.display = 'none';
+    document.getElementById('fp-err2').style.display = 'none';
+    document.getElementById('fp-step1').style.display = 'block';
+    document.getElementById('fp-step2').style.display = 'none';
+    openOverlay('fp-overlay');
+  });
+  document.getElementById('fp-close').addEventListener('click', function() { closeOverlay('fp-overlay'); });
+  document.getElementById('fp-overlay').addEventListener('click', function(e) { if (e.target === this) closeOverlay('fp-overlay'); });
+
+  document.getElementById('fp-verify-btn').addEventListener('click', function() {
+    var phrase = document.getElementById('fp-phrase').value.trim();
+    var err = document.getElementById('fp-err1');
+    err.style.display = 'none';
+    if (!phrase) { err.textContent = 'Please enter the recovery phrase!'; err.style.display = 'block'; return; }
+    if (phrase !== getRecovery()) { err.textContent = 'Incorrect recovery phrase!'; err.style.display = 'block'; return; }
+    document.getElementById('fp-step1').style.display = 'none';
+    document.getElementById('fp-step2').style.display = 'block';
+  });
+
+  document.getElementById('fp-reset-btn').addEventListener('click', function() {
+    var nw = document.getElementById('fp-new').value;
+    var conf = document.getElementById('fp-conf').value;
+    var err = document.getElementById('fp-err2');
+    err.style.display = 'none';
+    if (!nw || !conf) { err.textContent = 'All fields required!'; err.style.display = 'block'; return; }
+    if (nw.length < 6) { err.textContent = 'Password must be at least 6 characters!'; err.style.display = 'block'; return; }
+    if (nw !== conf) { err.textContent = 'Passwords do not match!'; err.style.display = 'block'; return; }
+    localStorage.setItem('admin_pass', nw);
+    closeOverlay('fp-overlay');
+    showToast('Password reset! Please login with new password.');
+  });
+
+})();
+</script>
+</body>
+</html>
